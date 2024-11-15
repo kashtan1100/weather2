@@ -27,6 +27,7 @@
 import { ref, onMounted } from 'vue';
 import { getWeather } from "@/components/services/weather";
 import {useWeatherStore} from "@/stores/useWeatherStore";
+import {type City} from "@/types/city";
 
 const weatherStore = useWeatherStore();  // Access store
 const { cities } = weatherStore;  // Get cities from the store
@@ -36,7 +37,7 @@ const title = ref<string>('Выберите город');
 const weatherData = ref<any>(null);
 
 // Функция для получения прогноза на неделю
-const fetchWeather = async (city) => {
+const fetchWeather = async (city: City) => {
   title.value = city.name;
   if (city) {
     try {

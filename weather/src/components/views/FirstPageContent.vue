@@ -12,13 +12,13 @@
 
     <div>Сегодня</div>
     <div v-if="weather" class="weather-card">
-      <div>{{ formattedTime(weather.fact.obs_time) }}</div>
-      <div>Облачность: {{ weather.fact.cloudness }}</div>
-      <div>Погодные условия: {{ weather.fact.condition }}</div>
-      <div>Температура на ощупь {{ weather.fact.feels_like }} C</div>
-      <div>Вероятность осадков {{ weather.fact.prec_prob }} %</div>
-      <div>Температура {{ weather.fact.temp }} C</div>
-      <div>Порывы ветра {{ weather.fact.wind_gust }} м/с</div>
+      <div>{{ formattedTime(weather?.fact.obs_time) }}</div>
+      <div>Облачность: {{ weather?.fact.cloudness }}</div>
+      <div>Погодные условия: {{ weather?.fact.condition }}</div>
+      <div>Температура на ощупь {{ weather?.fact.feels_like }} C</div>
+      <div>Вероятность осадков {{ weather?.fact.prec_prob }} %</div>
+      <div>Температура {{ weather?.fact.temp }} C</div>
+      <div>Порывы ветра {{ weather?.fact.wind_gust }} м/с</div>
       <h3>{{ title }}</h3>
     </div>
   </div>
@@ -29,15 +29,17 @@ import { ref, onMounted } from 'vue';
 import { useWeatherStore } from '@/stores/useWeatherStore';  // Import store
 import { getWeather } from '@/components/services/weather';
 import { useFilters } from '@/composables/use-filters';
+import { type WeatherData } from '@/types/weather';
+import type {City} from "@/types/city";  // Импортируем типы
 
 const weatherStore = useWeatherStore();  // Access store
 const { cities } = weatherStore;  // Get cities from the store
 
 const title = ref<string>('Выберите город');
-const weather = ref(null);
+const weather = ref<WeatherData | null>(null);  // Указываем тип
 
 // Получаем погоду для города
-const fetchWeather = async (city) => {
+const fetchWeather = async (city: City) => {
   title.value = city.name;
   if (city) {
     try {
